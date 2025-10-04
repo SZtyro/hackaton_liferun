@@ -1,0 +1,13 @@
+$border-color: rgb(146, 111, 20) solid 6px;
+
+.wrapper{
+    width: 300px;
+    padding: 20px;
+    border: $border-color;
+
+    & .image{
+        border: $border-color;
+        height: 160px;
+        width: 160px;
+    }
+}

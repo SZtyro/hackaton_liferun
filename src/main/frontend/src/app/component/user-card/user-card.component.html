@@ -1,0 +1,13 @@
+<div #wrapper class="wrapper">
+    <div class="d-flex pb-3 justify-content-between align-items-center">
+        <h3>{{scenario().title}}</h3>
+        <img height="40" [src]="scenario().iconPath">
+    </div>
+    {{scenario().description}}
+
+    <ul>
+        <li *ngFor="let objective of scenario().objectives">
+            {{objective}}
+        </li>
+    </ul>
+</div>

@@ -3,12 +3,15 @@
     <app-progress-bar color="#505ccc" [partCount]="24" [progress]="15"></app-progress-bar>
   </div>
 
-  <div #scrollContainer class="d-flex main content" 
+  <div #scrollContainer class="d-flex main content"
   class="d-flex main content"
   [class.grabbing]="isDragging"
   (mousedown)="onMouseDown($event)"
   (mousemove)="onMouseMove($event)"
   (mouseup)="onMouseUp()">
+  <!-- <app-user-card *ngFor="let scenario of scenarios" [scenario]="scenario"></app-user-card> -->
+
+  <div class="d-flex" style="overflow: auto;">
     <div>
       <app-tile *ngFor="let tile of tiles"
         style="position: absolute;"
@@ -18,14 +21,11 @@
         [class]="tile.class"
         [display]="tile.display"
         [height]="height">
-        
-
       </app-tile>
     </div>
   </div>
-  
+
   <div #footer class="hud">
     Postać / Zakładki(Finanse)
   </div>
 </div>
-
