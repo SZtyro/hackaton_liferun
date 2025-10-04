@@ -98,4 +98,3 @@ export class PerlinNoise {
 
 // Example usage:
 const perlin = new PerlinNoise(42); // optional seed
-console.log(perlin.noise(1.3, 4.2)); // e.g. 0.038912...

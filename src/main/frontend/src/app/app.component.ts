@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, ViewChildren } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PerlinNoise } from './utils/perlinNoise';
@@ -29,6 +29,9 @@ export class AppComponent {
 
   @ViewChild("footer") box;
   @ViewChild("stats") stats;
+  @ViewChild("endTurn") endTurn;
+  @ViewChildren("tab") tabRefs;
+  @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
 
 
   margin = 1;
@@ -38,13 +41,14 @@ export class AppComponent {
   tiles: any = [];
 
   selectedStart: { x: number, y: number } | null = null;
-selectedEnd: { x: number, y: number } | null = null;
-lastDistance: number | null = null;
+  selectedEnd: { x: number, y: number } | null = null;
+  lastDistance: number | null = null;
 
-pathTiles: { x: number, y: number }[] = [];
+  pathTiles: { x: number, y: number }[] = [];
 
 
 
+  tabs = ['Statystyki', 'Finanse', 'Rozwój']
   scenarios: Scenario[] = [
     {
       title: 'Sandbox',
@@ -119,8 +123,14 @@ pathTiles: { x: number, y: number }[] = [];
   }
 
   ngAfterViewInit(): void {
-    applyPixelArtBackground(this.box.nativeElement, '#535353');
-    applyPixelArtBackground(this.stats.nativeElement, '#535353');
+    let color = '#535353';
+    applyPixelArtBackground(this.box.nativeElement, color);
+    applyPixelArtBackground(this.stats.nativeElement, color);
+    applyPixelArtBackground(this.endTurn.nativeElement, "#3f4d44");
+
+    this.tabRefs.forEach(element => {
+      applyPixelArtBackground(element.nativeElement, color);
+    });
   }
 
   getRandomHexColor(init?: number): string {
@@ -131,16 +141,18 @@ pathTiles: { x: number, y: number }[] = [];
   }
 
   getType(noise: number): string {
-    console.log(noise);
 
     if (noise > -0.05 && noise < 0.05) {
       return 'road';
     }
 
-    switch(true){
-      case noise > -1 && noise <= -0.4: return 'water'
-      case noise > -0.4 && noise <= -0.3: return 'sand'
-      case noise > -0.3 && noise <= 0.4: return 'grass'
+    switch (true) {
+      case noise > -1 && noise <= -0.4:
+        return 'water';
+      case noise > -0.4 && noise <= -0.3:
+        return 'sand';
+      case noise > -0.3 && noise <= 0.4:
+        return 'grass';
       // case noise > 0.3: return 'sand'
       case noise > 0.4:
         return 'rock';
@@ -154,10 +166,10 @@ pathTiles: { x: number, y: number }[] = [];
   isInPath(x: number, y: number): boolean {
     return this.pathTiles.some(p => p.x === x && p.y === y);
   }
-  
+
 
   onTileClicked(tile: { x: number, y: number }) {
-    
+
     if (!this.selectedStart) {
       this.selectedStart = tile;
       //console.debug("[clicked]",tile.x,tile.y)
@@ -169,7 +181,7 @@ pathTiles: { x: number, y: number }[] = [];
       this.selectedStart = tile;
       this.selectedEnd = null;
       this.lastDistance = null;
-      
+
     }
   }
 
@@ -180,8 +192,8 @@ pathTiles: { x: number, y: number }[] = [];
       this.lastDistance = path.length ? path.length - 1 : -1;
     }
   }
-  
-  
+
+
   // Sąsiedzi offsetowi (odd-r)
 directionsEven = [
   [+1, 0], [0, -1], [-1, -1],

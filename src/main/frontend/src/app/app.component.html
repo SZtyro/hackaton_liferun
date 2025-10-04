@@ -1,14 +1,21 @@
 <div class="d-flex w-100 h-100 flex-column justify-content-between" >
   <div #stats class="hud stats">
-    <app-progress-bar color="#505ccc" [partCount]="24" [progress]="15"></app-progress-bar>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- <div > -->
+          <app-progress-bar class="col-12" color="#505ccc" [partCount]="24" [progress]="15"></app-progress-bar>
+          <app-progress-bar class="col-4" color="darkred" [partCount]="4" [progress]="3"></app-progress-bar>
+        <!-- </div> -->
+      </div>
+    </div>
   </div>
 
   <div #scrollContainer class="d-flex main content"
-  class="d-flex main content"
-  [class.grabbing]="isDragging"
-  (mousedown)="onMouseDown($event)"
-  (mousemove)="onMouseMove($event)"
-  (mouseup)="onMouseUp()">
+    class="d-flex main content"
+    [class.grabbing]="isDragging"
+    (mousedown)="onMouseDown($event)"
+    (mousemove)="onMouseMove($event)"
+    (mouseup)="onMouseUp()">
   <!-- <app-user-card *ngFor="let scenario of scenarios" [scenario]="scenario"></app-user-card> -->
 
   <div class="d-flex" style="overflow: auto;">
@@ -29,9 +36,15 @@
   (tileClicked)="onTileClicked($event)">
       </app-tile>
     </div>
-  </div>
 
-  <div #footer class="hud">
-    Postać / Zakładki(Finanse)
   </div>
+<div class="tabs">
+  <div *ngFor="let tab of tabs" #tab>{{tab}}</div>
+</div>
+<div #footer class="hud footer d-flex justify-content-between align-items-center">
+  <div>Postać</div>
+  <div style="width: 40%;">
+    <app-progress-bar class="balance" color="yellow" [partCount]="6" [progress]="3"></app-progress-bar>
+  </div>
+  <div #endTurn class="endTurn">Zakończ turę</div>
 </div>
