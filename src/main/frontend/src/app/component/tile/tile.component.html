@@ -1,7 +1,9 @@
 <div class="wrapper">
     <div #tile class="hexagon"
-        [class]="class() +' '+ getRandomClass()"
-        [style.height.px]="height()">
+        [ngClass]="[class, getRandomClass(),
+        inPath ? 'path' : '', selected ? 'selected' : '', endSelected ? 'end-selected' : '']"
+        [style.height.px]="height()"
+        (click)="onClick()">
         
         <!-- {{display()}} -->
         <img *ngIf="imgVisibleHouse()" [height]="height()" src="./../../../assets/Tiles/Modern/modern_houseSmall.png" >
