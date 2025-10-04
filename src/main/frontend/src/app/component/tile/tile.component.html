@@ -1,8 +1,11 @@
 <div class="wrapper">
     <div #tile class="hexagon"
-        [class]="class()"
+        [class]="class() +' '+ getRandomClass()"
         [style.height.px]="height()">
+        
         <!-- {{display()}} -->
+        <img *ngIf="imgVisibleHouse()" [height]="height()" src="./../../../assets/Tiles/Modern/modern_houseSmall.png" >
+        <img *ngIf="imgVisibleCorp()" [height]="height()" src="./../../../assets/Tiles/Modern/modern_skyscraperGlass.png" >
     </div>
-    <img *ngIf="imgVisible()" [height]="height()" src="./../../../assets/house.png" >
+    <div class="ground" [style.height.px]="height()"></div>
 </div>
