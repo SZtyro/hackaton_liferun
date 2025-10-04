@@ -18,18 +18,23 @@
     (mouseup)="onMouseUp()">
   <!-- <app-user-card *ngFor="let scenario of scenarios" [scenario]="scenario"></app-user-card> -->
 
-    <div class="d-flex" style="overflow: auto;">
-      <div>
-        <app-tile *ngFor="let tile of tiles"
-          style="position: absolute;"
-          [style.left.px]="(tile.x * (width + margin)) + (tile.y % 2 * (width / 2))"
-          [style.top.px]="(tile.y * (height * 0.75 + margin))"
-          [color]="tile.color"
-          [class]="tile.class"
-          [display]="tile.display"
-          [height]="height">
-        </app-tile>
-      </div>
+  <div class="d-flex" style="overflow: auto;">
+    <div>
+      <app-tile *ngFor="let tile of tiles"
+        style="position: absolute;"
+        [style.left.px]="(tile.x * (width + margin)) + (tile.y % 2 * (width / 2))"
+        [style.top.px]="(tile.y * (height * 0.75 + margin))"
+        [color]="tile.color"
+        [x]="tile.x"
+        [y]="tile.y"
+        [class]="tile.class"
+        [display]="tile.display"
+        [height]="height"
+        [selected]="selectedStart?.x === tile.x && selectedStart?.y === tile.y"
+  [endSelected]="selectedEnd?.x === tile.x && selectedEnd?.y === tile.y"
+  [inPath]="isInPath(tile.x, tile.y)"
+  (tileClicked)="onTileClicked($event)">
+      </app-tile>
     </div>
 
   </div>

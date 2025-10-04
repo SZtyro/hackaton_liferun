@@ -43,8 +43,39 @@
     transform: translateY(-1px);
     transition: transform 0.1s ease-in-out;
     pointer-events: none; /* żeby obrazek nie blokował hover */
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
   }
 }
+
+.hexagon.selected::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 255, 0, 0.5); // żółta przezroczystość
+  z-index: 2; // nad obrazkiem, pod tekstem
+  pointer-events: none; // nie blokuje kliknięć
+}
+
+.hexagon.end-selected::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 0, 0, 0.3); // żółta przezroczystość
+  z-index: 2; // nad obrazkiem, pod tekstem
+  pointer-events: none; // nie blokuje kliknięć
+}
+
+.hexagon.path::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.5); // żółta przezroczystość
+  z-index: 2; // nad obrazkiem, pod tekstem
+  pointer-events: none; // nie blokuje kliknięć
+}
+
+
 
 .bg-1.grass{
   background-image: url("./../../../assets/Tiles/Terrain/Grass/grass_05.png");
