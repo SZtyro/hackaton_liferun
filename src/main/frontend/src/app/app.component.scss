@@ -29,8 +29,9 @@
 
 
 .hud {
+ 
   width: 100%;
-  padding: 20px;
+  padding: 0 12px;
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
   background-size: 256px; 
@@ -39,8 +40,41 @@
   bottom:0;
 
   &.stats{
-    height: 30px;
+    height: fit-content;
     position: fixed;
     top:0
   }
+
+  &.footer{
+    height: 68px !important;
+  }
+
+  & .row > *{
+    padding: 4px 0;
+  }
+}
+
+.tabs{
+  position: fixed;
+  right: 0;
+  bottom: 66px;
+  z-index: 200;
+  display: flex;
+  gap: 4px;
+  & > div{
+    padding: 4px 12px;
+    border-width: 2px;
+    border-bottom: 0px;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.endTurn{
+  height: 40px;
+  padding: 12px;
+  border: darkolivegreen solid 4px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }

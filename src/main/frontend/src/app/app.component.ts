@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, ViewChildren } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PerlinNoise } from './utils/perlinNoise';
@@ -29,14 +29,17 @@ export class AppComponent {
 
   @ViewChild("footer") box;
   @ViewChild("stats") stats;
+  @ViewChild("endTurn") endTurn;
+  @ViewChildren("tab") tabRefs;
+  @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
 
 
   margin = 1;
   height = 64;
-  size = 64;
+  size = 20;
 
   tiles: any = [];
-
+  tabs = ['Statystyki', 'Finanse', 'Rozwój']
   scenarios: Scenario[] = [
     {
       title: 'Sandbox',
@@ -111,8 +114,14 @@ export class AppComponent {
   }
 
   ngAfterViewInit(): void {
-    applyPixelArtBackground(this.box.nativeElement, '#535353');
-    applyPixelArtBackground(this.stats.nativeElement, '#535353');
+    let color = '#535353';
+    applyPixelArtBackground(this.box.nativeElement, color);
+    applyPixelArtBackground(this.stats.nativeElement, color);
+    applyPixelArtBackground(this.endTurn.nativeElement, "#3f4d44");
+
+    this.tabRefs.forEach(element => {
+      applyPixelArtBackground(element.nativeElement, color);
+    });
   }
 
   getRandomHexColor(init?: number): string {
@@ -123,7 +132,6 @@ export class AppComponent {
   }
 
   getType(noise: number): string {
-    console.log(noise);
 
     if (noise > -0.05 && noise < 0.05) {
       return 'road';
@@ -133,25 +141,14 @@ export class AppComponent {
       case noise > -1 && noise <= -0.4: return 'water'
       case noise > -0.4 && noise <= -0.3: return 'sand'
       case noise > -0.3 && noise <= 0.4: return 'grass'
-
-    switch (true) {
-      case noise > -1 && noise <= -0.4:
-        return 'water';
-      case noise > -0.4 && noise <= -0.3:
-        return 'sand';
-      case noise > -0.3 && noise <= 0.4:
-        return 'grass';
       // case noise > 0.3: return 'sand'
-      case noise > 0.4:
-        return 'rock';
-      default:
-        return 'snow';
+      case noise > 0.4: return 'rock'
+      default: return 'snow'
     }
 
 
   }
 
-  @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
 
   isDragging = false;
   startX = 0;
