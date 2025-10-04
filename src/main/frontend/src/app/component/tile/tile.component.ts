@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, ViewChild } from '@angular/core';
 import { applyPixelArtBackground } from 'src/app/utils/pixelartHelper';
 
 @Component({
@@ -7,7 +7,8 @@ import { applyPixelArtBackground } from 'src/app/utils/pixelartHelper';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './tile.component.html',
-  styleUrl: './tile.component.scss'
+  styleUrl: './tile.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TileComponent {
 
