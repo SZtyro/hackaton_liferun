@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PerlinNoise } from './utils/perlinNoise';
@@ -22,14 +22,18 @@ import {
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class AppComponent {
-  @ViewChild('footer') box;
-  @ViewChild('stats') stats;
+
+  @ViewChild("footer") box;
+  @ViewChild("stats") stats;
+
 
   margin = 1;
-  height = 60;
-  size = 0;
+  height = 64;
+  size = 64;
 
   tiles: any = [];
 
@@ -62,7 +66,7 @@ export class AppComponent {
       title: 'Równowaga życiowa',
       description: '',
       objectives: [
-        
+
       ],
       iconPath: './../assets/icons/balance.svg'
     },
@@ -70,7 +74,7 @@ export class AppComponent {
       title: 'Tryb edukacyjny',
       description: '',
       objectives: [
-        
+
       ],
       iconPath: './../assets/icons/books.svg'
     },
@@ -91,6 +95,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     let perlin = new PerlinNoise(new Date().getTime());
+
 
     for (let x = 0; x <= this.size; x++)
       for (let y = 0; y <= this.size; y++) {
@@ -120,18 +125,59 @@ export class AppComponent {
   getType(noise: number): string {
     console.log(noise);
 
-    switch (true) {
-      case noise > -1 && noise <= -0.4:
-        return 'water';
-      case noise > -0.4 && noise <= -0.3:
-        return 'sand';
-      case noise > -0.3 && noise <= 0.4:
-        return 'grass';
+    if (noise > -0.05 && noise < 0.05) {
+      return 'road';
+    }
+
+    switch(true){
+      case noise > -1 && noise <= -0.4: return 'water'
+      case noise > -0.4 && noise <= -0.3: return 'sand'
+      case noise > -0.3 && noise <= 0.4: return 'grass'
       // case noise > 0.3: return 'sand'
       case noise > 0.4:
         return 'rock';
       default:
         return 'snow';
     }
+
+
+  }
+
+  @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
+
+  isDragging = false;
+  startX = 0;
+  startY = 0;
+  scrollLeft = 0;
+  scrollTop = 0;
+
+  onMouseDown(event: MouseEvent): void {
+    // tylko lewy przycisk myszy (0)
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.button !== 0) return;
+
+    this.isDragging = true;
+    const container = this.scrollContainer.nativeElement;
+    this.startX = event.pageX;
+    this.startY = event.pageY;
+    this.scrollLeft = container.scrollLeft;
+    this.scrollTop = container.scrollTop;
+  }
+
+  onMouseMove(event: MouseEvent): void {
+    if (!this.isDragging) return;
+
+    event.preventDefault(); // zapobiega np. zaznaczaniu tekstu
+    const container = this.scrollContainer.nativeElement;
+    const dx = event.pageX - this.startX;
+    const dy = event.pageY - this.startY;
+    container.scrollLeft = this.scrollLeft - dx;
+    container.scrollTop = this.scrollTop - dy;
+  }
+
+  onMouseUp(): void {
+    this.isDragging = false;
   }
 }
