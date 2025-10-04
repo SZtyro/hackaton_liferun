@@ -69,6 +69,10 @@ export class AppComponent {
 
   getType(noise: number): string {
     console.log(noise);
+
+    if (noise > -0.05 && noise < 0.05) {
+      return 'road';
+    }
     
     switch(true){
       case noise > -1 && noise <= -0.4: return 'water'
@@ -78,6 +82,8 @@ export class AppComponent {
       case noise > 0.4: return 'rock'
       default: return 'snow'
     }
+
+
   }
 
   @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;

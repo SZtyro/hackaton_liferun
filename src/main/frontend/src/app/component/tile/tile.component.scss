@@ -1,5 +1,6 @@
 .wrapper {
   position: relative;
+  overflow-y: visible;
 
   & .hexagon {
     aspect-ratio: cos(30deg);
@@ -8,22 +9,41 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.1s;
+    position: relative; /* ważne, żeby heksagon był w kontekście pozycjonowania */
 
-    &:hover{
-      //scale: 1.1;
+    &:hover {
       cursor: pointer;
       transform: translateY(-10px);
+      transition-duration: 0.1s;
+      transition-timing-function: ease-in-out;
       background-color: brown;
+      overflow: visible;
+      z-index: 20;
+    }
+
+    /* kluczowe - gdy jest hover nad hexagonem, obrazek pod spodem się pokazuje */
+    &:hover + .bg {
+      opacity: 1;
+      transform: translateY(-10px);
+      transition-duration: 0.1s;
+      transition-timing-function: ease-in-out;
     }
   }
 
-  & img{
+  & .bg {
     position: absolute;
-    //left: -35%;
-    //top: -17px;
+    top: 10px;
+    left: 0;
+    width: 100%;      /* dopasuj do rozmiaru hexagona */
+    height: 101%;     /* dopasuj do rozmiaru hexagona */
     z-index: 1;
+    opacity: 0;       /* domyślnie niewidoczny */
+    transform: translateY(-1px);
+    transition: transform 0.1s ease-in-out;
+    pointer-events: none; /* żeby obrazek nie blokował hover */
   }
-
 }
 
 .bg-1.grass{
@@ -68,6 +88,26 @@
   background-size: contain;
 }
 
+.bg-1.road{
+  background-image: url("./../../../assets/Tiles/Terrain/Stone/stone_19.png");
+  background-size: contain;
+}
+.bg-2.road{
+  background-image: url("./../../../assets/Tiles/Terrain/Stone/stone_07.png");
+  background-size: contain;
+}
+.bg-3.road{
+  background-image: url("./../../../assets/Tiles/Terrain/Stone/stone_16.png");
+  background-size: contain;
+}
+.bg-4.road{
+  background-image: url("./../../../assets/Tiles/Terrain/Stone/stone_14.png");
+  background-size: contain;
+}
+.bg-5.road{
+  background-image: url("./../../../assets/Tiles/Terrain/Stone/stone_18.png");
+  background-size: contain;
+}
 
 .water {
   /* dwa "pixelowe" wzory - przesunięte względem siebie dla mozaiki */

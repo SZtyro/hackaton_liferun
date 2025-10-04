@@ -1,5 +1,5 @@
 *{
-  overflow: hidden !important;
+  //overflow: hidden;
 }
 .grid {
   display: grid;
@@ -17,7 +17,7 @@
 }
 
 .main.content {
-  overflow: auto;
+  overflow: hidden;
   position: relative;
   cursor: grab;
   flex: 1;
