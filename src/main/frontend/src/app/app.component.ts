@@ -33,9 +33,17 @@ export class AppComponent {
 
   margin = 1;
   height = 64;
-  size = 64;
+  size = 20;
 
   tiles: any = [];
+
+  selectedStart: { x: number, y: number } | null = null;
+selectedEnd: { x: number, y: number } | null = null;
+lastDistance: number | null = null;
+
+pathTiles: { x: number, y: number }[] = [];
+
+
 
   scenarios: Scenario[] = [
     {
@@ -133,14 +141,6 @@ export class AppComponent {
       case noise > -1 && noise <= -0.4: return 'water'
       case noise > -0.4 && noise <= -0.3: return 'sand'
       case noise > -0.3 && noise <= 0.4: return 'grass'
-
-    switch (true) {
-      case noise > -1 && noise <= -0.4:
-        return 'water';
-      case noise > -0.4 && noise <= -0.3:
-        return 'sand';
-      case noise > -0.3 && noise <= 0.4:
-        return 'grass';
       // case noise > 0.3: return 'sand'
       case noise > 0.4:
         return 'rock';
@@ -150,6 +150,91 @@ export class AppComponent {
 
 
   }
+
+  isInPath(x: number, y: number): boolean {
+    return this.pathTiles.some(p => p.x === x && p.y === y);
+  }
+  
+
+  onTileClicked(tile: { x: number, y: number }) {
+    
+    if (!this.selectedStart) {
+      this.selectedStart = tile;
+      //console.debug("[clicked]",tile.x,tile.y)
+    } else if (!this.selectedEnd) {
+      this.selectedEnd = tile;
+      this.calculatePath();
+    } else {
+      // reset wyboru
+      this.selectedStart = tile;
+      this.selectedEnd = null;
+      this.lastDistance = null;
+      
+    }
+  }
+
+  calculatePath() {
+    if (this.selectedStart && this.selectedEnd) {
+      const path = this.findShortestPath(this.selectedStart, this.selectedEnd);
+      this.pathTiles = path;
+      this.lastDistance = path.length ? path.length - 1 : -1;
+    }
+  }
+  
+  
+  // Sąsiedzi offsetowi (odd-r)
+directionsEven = [
+  [+1, 0], [0, -1], [-1, -1],
+  [-1, 0], [-1, +1], [0, +1]
+];
+directionsOdd = [
+  [+1, 0], [+1, -1], [0, -1],
+  [-1, 0], [0, +1], [+1, +1]
+];
+
+findShortestPath(start: { x: number, y: number }, end: { x: number, y: number }): { x: number, y: number }[] {
+  const visited = new Set<string>();
+  const queue: Array<{ x: number, y: number, path: { x: number, y: number }[] }> = [];
+
+  const allowed = ['road', 'grass'];
+  const key = (x: number, y: number) => `${x},${y}`;
+
+  queue.push({ ...start, path: [start] });
+  visited.add(key(start.x, start.y));
+
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+    if (current.x === end.x && current.y === end.y) {
+      return current.path;
+    }
+
+    const dirs = current.y % 2 === 0 ? this.directionsEven : this.directionsOdd;
+
+    for (const [dx, dy] of dirs) {
+      const nx = current.x + dx;
+      const ny = current.y + dy;
+      const nextKey = key(nx, ny);
+
+      if (visited.has(nextKey)) continue;
+
+      const neighbor = this.tiles.find(t => t.x === nx && t.y === ny);
+      if (!neighbor) continue;
+
+      if (!allowed.includes(neighbor.class)) continue;
+
+      visited.add(nextKey);
+      queue.push({
+        x: nx,
+        y: ny,
+        path: [...current.path, { x: nx, y: ny }]
+      });
+    }
+  }
+
+  return []; // brak ścieżki
+}
+
+
 
   @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
 
