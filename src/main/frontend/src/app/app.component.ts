@@ -1,39 +1,78 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-
+import { Component, ViewChild } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { PerlinNoise } from './utils/perlinNoise';
+import { TileComponent } from './component/tile/tile.component';
+import { applyPixelArtBackground } from './utils/pixelartHelper';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, CommonModule, TileComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  mobileView:boolean = false;
+  @ViewChild("footer") box;
+ 
+  
+  margin = 1;
+  height = 60;
+  size = 30;
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.mobileView = event.target.innerWidth > 576;
-  }
-
-  menu = [
-    {name: 'Dashboard', icon: 'home', path: 'dashboard'},
+  tiles:any = [
+    // {x: 0, y:0},
+    // {x: 1, y:0},
+    // {x: 2, y:0},
+    // {x: 1, y:1},
+    // {x: 0, y:1},
+    // {x: 0, y:2},
   ]
 
+  get width(): number {
+    return Math.sqrt(3) / 2 * this.height;
+  }
+
   ngOnInit(): void {
-    this.mobileView = window.innerWidth > 576;
+    let perlin = new PerlinNoise(new Date().getTime());
+    
+
+    for(let x = 0; x <= this.size; x++)
+      for(let y = 0; y <= this.size; y++){
+        let noise = perlin.noise(x * 0.1, y * 0.1)
+        this.tiles.push({
+          x:x, 
+          y:y, 
+          // color: this.getRandomHexColor(),
+          display: noise.toFixed(2),
+          class: this.getType(noise)
+        })
+      }
   }
 
-  getCurrentPath(): string{
-    return location.pathname.slice(1)
+  ngAfterViewInit(): void {
+    applyPixelArtBackground(this.box.nativeElement, "darkgrey");
+
   }
 
-  isServeEnabled(): boolean{
-    return (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-      && location.port === '4200';
+  getRandomHexColor(init?: number): string {
+    const hex = Math.floor( (init ? init : Math.random()) * 0xffffff)
+      .toString(16)
+      .padStart(6, "0");
+    return `#${hex}`;
   }
 
-  getDevelopHref(): string{
-    return location.href.replace(':8080', ':4200')
+  getType(noise: number): string {
+    console.log(noise);
+    
+    switch(true){
+      case noise > -1 && noise <= -0.4: return 'water'
+      case noise > -0.4 && noise <= -0.3: return 'sand'
+      case noise > -0.3 && noise <= 0.4: return 'grass'
+      // case noise > 0.3: return 'sand'
+      case noise > 0.4: return 'rock'
+      default: return 'snow'
+    }
   }
-
 }

@@ -1,16 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
-@use '@angular/material' as mat;
-@use './../m3-theme.scss';
-
+@use "@angular/material" as mat;
+@use "./../m3-theme.scss";
 
 @include mat.core();
 
-:root{
-    --main-background-color: #f3f3f3;
+:root {
+  --main-background-color: #f3f3f3;
 }
 
-html{
+html {
   @media (prefers-color-scheme: light) {
     @include mat.core-theme(m3-theme.$light-theme);
     @include mat.all-component-themes(m3-theme.$light-theme);
@@ -23,14 +22,24 @@ html{
     @include mat.system-level-colors(m3-theme.$dark-theme);
     @include mat.system-level-typography(m3-theme.$dark-theme);
   }
- 
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  // font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  font-family: "Pixelify Sans", sans-serif !important;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 
 input {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 }
-

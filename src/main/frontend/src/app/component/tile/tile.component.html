@@ -1,0 +1,8 @@
+<div class="wrapper">
+    <div #tile class="hexagon"
+        [class]="class()"
+        [style.height.px]="height()">
+        <!-- {{display()}} -->
+    </div>
+    <img *ngIf="imgVisible()" [height]="height()" src="./../../../assets/house.png" >
+</div>
