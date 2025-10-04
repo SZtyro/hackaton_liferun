@@ -1,11 +1,9 @@
 <div class="d-flex w-100 h-100 flex-column justify-content-between">
-  <!-- <div class="d-flex" style="color: wheat; font-size: 30px;">test</div> -->
-  
-  <div class="stats">
-    staty
+  <div #stats class="hud stats">
+    <app-progress-bar color="#505ccc" [partCount]="24" [progress]="15"></app-progress-bar>
   </div>
+
   <div class="d-flex" style="overflow: auto;">
-    <!-- <div style="background-color: red; height: 1000px; width: 10000px;"></div> -->
     <div>
       <app-tile *ngFor="let tile of tiles"
         style="position: absolute;"
@@ -19,7 +17,7 @@
     </div>
   </div>
   
-  <div #footer class="message">
-    Test okna
+  <div #footer class="hud">
+    Postać / Zakładki(Finanse)
   </div>
 </div>

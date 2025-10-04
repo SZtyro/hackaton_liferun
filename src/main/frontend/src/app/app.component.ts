@@ -4,22 +4,24 @@ import { CommonModule } from '@angular/common';
 import { PerlinNoise } from './utils/perlinNoise';
 import { TileComponent } from './component/tile/tile.component';
 import { applyPixelArtBackground } from './utils/pixelartHelper';
+import { ProgressBarComponent } from "./component/progress-bar/progress-bar.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, TileComponent],
+  imports: [RouterOutlet, CommonModule, TileComponent, ProgressBarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
 
   @ViewChild("footer") box;
+  @ViewChild("stats") stats;
  
   
   margin = 1;
   height = 60;
-  size = 30;
+  size = 0;
 
   tiles:any = [
     // {x: 0, y:0},
@@ -52,8 +54,8 @@ export class AppComponent {
   }
 
   ngAfterViewInit(): void {
-    applyPixelArtBackground(this.box.nativeElement, "darkgrey");
-
+    applyPixelArtBackground(this.box.nativeElement, "#535353");
+    applyPixelArtBackground(this.stats.nativeElement, "#535353");
   }
 
   getRandomHexColor(init?: number): string {
