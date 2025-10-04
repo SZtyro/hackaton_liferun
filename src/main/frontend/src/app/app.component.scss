@@ -1,9 +1,12 @@
-
+*{
+  overflow: hidden !important;
+}
 .grid {
   display: grid;
   align-items: center;
   justify-content: center;
 }
+
 
 .cell {
   display: flex;
@@ -13,6 +16,16 @@
   height: auto;
 }
 
+.main.content {
+  overflow: auto;
+  position: relative;
+  cursor: grab;
+  flex: 1;
+}
+
+.main.content:active {
+  cursor: grabbing;
+}
 
 
 .hud {
@@ -21,10 +34,13 @@
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
   background-size: 256px; 
-
+  position: fixed;
   z-index: 100;
+  bottom:0;
 
   &.stats{
     height: 30px;
+    position: fixed;
+    top:0
   }
 }

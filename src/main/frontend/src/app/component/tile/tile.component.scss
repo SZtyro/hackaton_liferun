@@ -26,11 +26,6 @@
 
 }
 
-*{
-  image-rendering: pixelated;  
-  transform: scale(1);
-}
-
 .bg-1.grass{
   background-image: url("./../../../assets/Tiles/Terrain/Grass/grass_05.png");
   background-size: contain;

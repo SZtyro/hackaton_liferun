@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PerlinNoise } from './utils/perlinNoise';
@@ -11,7 +11,9 @@ import { ProgressBarComponent } from "./component/progress-bar/progress-bar.comp
   standalone: true,
   imports: [RouterOutlet, CommonModule, TileComponent, ProgressBarComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class AppComponent {
 
@@ -20,8 +22,8 @@ export class AppComponent {
  
   
   margin = 1;
-  height = 60;
-  size = 0;
+  height = 64;
+  size = 64;
 
   tiles:any = [
     // {x: 0, y:0},
@@ -76,5 +78,43 @@ export class AppComponent {
       case noise > 0.4: return 'rock'
       default: return 'snow'
     }
+  }
+
+  @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
+
+  isDragging = false;
+  startX = 0;
+  startY = 0;
+  scrollLeft = 0;
+  scrollTop = 0;
+
+  onMouseDown(event: MouseEvent): void {
+    // tylko lewy przycisk myszy (0)
+    event.preventDefault();
+    event.stopPropagation();
+  
+    if (event.button !== 0) return;
+
+    this.isDragging = true;
+    const container = this.scrollContainer.nativeElement;
+    this.startX = event.pageX;
+    this.startY = event.pageY;
+    this.scrollLeft = container.scrollLeft;
+    this.scrollTop = container.scrollTop;
+  }
+
+  onMouseMove(event: MouseEvent): void {
+    if (!this.isDragging) return;
+
+    event.preventDefault(); // zapobiega np. zaznaczaniu tekstu
+    const container = this.scrollContainer.nativeElement;
+    const dx = event.pageX - this.startX;
+    const dy = event.pageY - this.startY;
+    container.scrollLeft = this.scrollLeft - dx;
+    container.scrollTop = this.scrollTop - dy;
+  }
+
+  onMouseUp(): void {
+    this.isDragging = false;
   }
 }
