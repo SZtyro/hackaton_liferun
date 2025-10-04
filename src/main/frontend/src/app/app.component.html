@@ -1,9 +1,14 @@
-<div class="d-flex w-100 h-100 flex-column justify-content-between">
+<div class="d-flex w-100 h-100 flex-column justify-content-between" >
   <div #stats class="hud stats">
     <app-progress-bar color="#505ccc" [partCount]="24" [progress]="15"></app-progress-bar>
   </div>
 
-  <div class="d-flex" style="overflow: auto;">
+  <div #scrollContainer class="d-flex main content" 
+  class="d-flex main content"
+  [class.grabbing]="isDragging"
+  (mousedown)="onMouseDown($event)"
+  (mousemove)="onMouseMove($event)"
+  (mouseup)="onMouseUp()">
     <div>
       <app-tile *ngFor="let tile of tiles"
         style="position: absolute;"
@@ -13,6 +18,8 @@
         [class]="tile.class"
         [display]="tile.display"
         [height]="height">
+        
+
       </app-tile>
     </div>
   </div>
@@ -21,3 +28,4 @@
     Postać / Zakładki(Finanse)
   </div>
 </div>
+
