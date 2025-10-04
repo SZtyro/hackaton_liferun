@@ -1,0 +1,10 @@
+<div class="icon"></div>
+<div class="border">
+    <div #content [style.left.px]="getProgressOffset()" class="content"></div>
+    <div class="segment" *ngFor="let bar of bars" 
+        [style.width.px]="segmentWidth"
+        [style.left.px]="getBarOffset(bar)">
+        <div class="label">{{bar + 1}}</div>
+        <div class="bar"></div>
+    </div>
+</div>

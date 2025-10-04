@@ -15,12 +15,16 @@
 
 
 
-
-.message {
+.hud {
   width: 100%;
   padding: 20px;
-  border-radius: 8px;
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
-  background-size: 128px; 
+  background-size: 256px; 
+
+  z-index: 100;
+
+  &.stats{
+    height: 30px;
+  }
 }

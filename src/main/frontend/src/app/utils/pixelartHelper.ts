@@ -8,7 +8,7 @@
 export function generatePixelArtBackground(
     baseColor: string,
     pixelCount = 16,
-    variance = 0.25
+    variance = 0.08
   ): string {
     const canvas = document.createElement("canvas");
     canvas.width = pixelCount;
@@ -34,9 +34,11 @@ export function generatePixelArtBackground(
   /** Ustawia mozaikę jako tło dla elementu (powtarzane, powiększone) */
   export function applyPixelArtBackground(
     element: HTMLElement,
-    color: string
+    color: string,
+    pixelCount = 32,
+    variance = 0.05
   ) {
-    const url = generatePixelArtBackground(color, 16, Math.random());
+    const url = generatePixelArtBackground(color, pixelCount, variance);
     element.style.backgroundImage = `url(${url})`;
     element.style.backgroundRepeat = "repeat";
     element.style.imageRendering = "pixelated"; // zachowaj ostre krawędzie
