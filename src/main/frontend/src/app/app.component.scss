@@ -68,6 +68,10 @@
     color: white;
     cursor: pointer;
   }
+
+  & > div:hover{
+    background: rgba($color: #fff, $alpha: .3);
+}
 }
 
 .endTurn{
@@ -77,4 +81,101 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-window {
+  background: white;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+}
+
+.modal-window span{
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-window {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.finance-summary p,
+.modal-window p {
+  margin: 0.5rem 0;
+}
+
+.finance-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.finance-table th,
+.finance-table td {
+  border: 1px solid #333;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.finance-table thead {
+  background-color: #333;
+}
+
+.finance-table tfoot {
+  background-color: #333;
+  font-weight: bold;
+}
+
+.modal-actions {
+  text-align: right;
+  margin-top: 1.5rem;
+}
+
+button {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1565c0;
+}
+
+.negative {
+  color: red;
+  font-weight: bold;
 }
