@@ -27,7 +27,15 @@ export class TileComponent {
 @Input() endSelected = false;
 @Input() inPath: boolean = false;
 
+visibleImage: string | null = null;
 
+private imageChances = [
+  { type: 'house', chance: 0.1 },
+  { type: 'corp', chance: 0.05 },
+  { type: 'hospital', chance: 0.02 },
+  { type: 'study', chance: 0.02 },
+  { type: 'station', chance: 0.05, width: 20, height:40 }
+];
 
 
   @Output() tileClicked = new EventEmitter<{ x: number, y: number }>();
@@ -37,24 +45,79 @@ export class TileComponent {
     console.log("clicked",this.x,this.y)
   }
 
-  imgVisibleHouse(){
-    return Math.random() < 0.1
-    // return true
-  }
+  // imgVisibleHouse(){
+  //   return Math.random() < 0.1
+  //   // return true
+  // }
 
-  imgVisibleCorp(){
-    return Math.random() < 0.01
-    // return true
+  // imgVisibleCorp(){
+  //   return Math.random() < 0.05
+  //   // return true
+  // }
+
+  // imgVisibleHospital(){
+  //   return Math.random() < 0.02
+  //   // return true
+  // }
+
+  // imgVisibleStudy(){
+  //   return Math.random() < 0.02
+  //   // return true
+  // }
+
+  // imgVisibleStation(){
+  //   return Math.random() < 0.05
+  //   // return true
+  // }
+
+  
+  getImagePath(type: string): string {
+    const paths = {
+      house: 'assets/Tiles/Modern/modern_houseSmall.png',
+      corp: 'assets/Tiles/Modern/modern_skyscraperGlass.png',
+      hospital: 'assets/Tiles/Modern/modern_villa.png',
+      study: 'assets/Tiles/Modern/modern_oldBuilding.png',
+      station: 'assets/Objects/banner.png'
+    };
+    return paths[type] ?? '';
+  }
+  
+  getTooltip(type: string): string {
+    const tooltips = {
+      house: 'Dom',
+      corp: 'Firma',
+      hospital: 'Szpital',
+      study: 'Szkoła',
+      station: 'Stacja'
+    };
+    return tooltips[type] ?? '';
   }
 
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
     // applyPixelArtBackground(this.tileRef.nativeElement, '#e7d3a3')
+    
   }
+
+  
+ngOnInit(): void {
+  this.setVisibleImage();
+}
+
+private setVisibleImage(): void {
+  for (const { type, chance } of this.imageChances) {
+    if (Math.random() < chance) {
+      this.visibleImage = type;
+      break; // tylko jedna
+    }
+  }
+}
 
   getRandomClass() {
     const index = Math.floor(Math.random() * 5) + 1;
     return 'bg-' + index;
   }
+  
 }
+
