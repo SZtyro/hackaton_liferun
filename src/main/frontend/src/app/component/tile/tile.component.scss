@@ -180,3 +180,48 @@
 }
 
 
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+
+  .custom-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    width: max-content;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+
+    position: absolute;
+    z-index: 10;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    transition: opacity 0.2s;
+  }
+
+  &:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+    z-index: 999;
+  }
+}
+
+.hexagon .tile-image[title="Stacja"]{
+  //width: 100%;
+  height: 100%;
+}
+
+.hexagon:hover .custom-tooltip{
+  visibility: visible;
+    opacity: 1;
+    z-index: 999;
+    position: relative;
+    //margin-bottom: 50px;
+}
+
