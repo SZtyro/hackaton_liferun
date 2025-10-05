@@ -1,17 +1,14 @@
-FROM openjdk:17-jdk-slim as build
+
+FROM node:18-slim
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
+COPY package*.json ./
 
-RUN apt-get update && apt-get install -y maven
-RUN mvn clean install -Dmaven.test.skip=true -P production
+RUN npm install -g @angular/cli && npm install
 
-FROM tomcat:9-jdk17-openjdk-slim
+COPY . .
 
-COPY --from=build /app/target/liferun-1.0.0.war /usr/local/tomcat/webapps/ROOT.war
+EXPOSE 4200
 
-EXPOSE 8080
-
-CMD ["catalina.sh", "run"]
+CMD ["npm", "run", "start"]
