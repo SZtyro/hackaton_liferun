@@ -29,6 +29,7 @@ export class AppComponent {
 
   @ViewChild("footer") box;
   @ViewChild("stats") stats;
+  @ViewChild("finance") finance;
   @ViewChild("endTurn") endTurn;
   @ViewChildren("tab") tabRefs;
   @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
@@ -125,6 +126,7 @@ export class AppComponent {
   ngAfterViewInit(): void {
     let color = '#535353';
     applyPixelArtBackground(this.box.nativeElement, color);
+    applyPixelArtBackground(this.finance.nativeElement, color);
     applyPixelArtBackground(this.stats.nativeElement, color);
     applyPixelArtBackground(this.endTurn.nativeElement, "#3f4d44");
 
@@ -246,10 +248,6 @@ findShortestPath(start: { x: number, y: number }, end: { x: number, y: number })
   return []; // brak ścieżki
 }
 
-
-
-  @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
-
   isDragging = false;
   startX = 0;
   startY = 0;
@@ -285,4 +283,57 @@ findShortestPath(start: { x: number, y: number }, end: { x: number, y: number })
   onMouseUp(): void {
     this.isDragging = false;
   }
+
+  isModalOpen: boolean = false;
+
+openModal() {
+  this.isModalOpen = true;
+  this.calculateZUS();
 }
+
+closeModal() {
+  this.isModalOpen = false;
+}
+
+player = {
+  salaryBrutto: 13000,
+  zus: {
+    emerytalna: 0,
+    rentowa: 0,
+    chorobowa: 0,
+    zdrowotna: 0,
+    razem: 0,
+  },
+  salaryNetto: 0,
+  saldo:23800,
+  wydatki_stale:1200,
+
+};
+
+calculateZUS() {
+  const brutto = this.player.salaryBrutto;
+
+  const emerytalna = brutto * 0.0976;
+  const rentowa = brutto * 0.015;
+  const chorobowa = brutto * 0.0245;
+  const zdrowotna = brutto * 0.0776;
+
+  const razemZUS = emerytalna + rentowa + chorobowa;
+  const pit = (brutto-razemZUS) * 0.12; // uproszczony podatek
+
+  const netto = brutto - razemZUS - zdrowotna - pit;
+
+  this.player.zus = {
+    emerytalna,
+    rentowa,
+    chorobowa,
+    zdrowotna,
+    razem: razemZUS
+  };
+
+  this.player.salaryNetto = Math.round(netto);
+}
+
+}
+
+

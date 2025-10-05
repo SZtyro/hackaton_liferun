@@ -39,7 +39,7 @@
 
   </div>
 <div class="tabs">
-  <div *ngFor="let tab of tabs" #tab>{{tab}}</div>
+  <div *ngFor="let tab of tabs" #tab (click)="openModal()">{{tab}}</div>
 </div>
 <div #footer class="hud footer d-flex justify-content-between align-items-center">
   <div>Postać</div>
@@ -48,3 +48,76 @@
   </div>
   <div #endTurn class="endTurn">Zakończ turę</div>
 </div>
+
+<!-- Modal -->
+<div class="modal-backdrop" [hidden]="!isModalOpen" (click)="closeModal()">
+  <div class="modal-window" #finance (click)="$event.stopPropagation()">
+    <h2>Finanse</h2>
+    <hr />
+
+    <!-- Saldo -->
+    <div class="finance-summary">
+      <p><strong>Saldo konta:</strong> <span>{{ player.saldo | number:'1.0-2' }}</span> zł</p>
+      <p><strong>Pensja brutto:</strong> {{ player.salaryBrutto | number:'1.0-2' }} zł / msc</p>
+      <p><strong>Na rękę:</strong> {{ player.salaryNetto | number:'1.0-2' }} zł / msc</p>
+    </div>
+
+    <hr />
+
+    <!-- Składki ZUS -->
+    <h3>Składki ZUS</h3>
+    <table class="finance-table">
+      <thead>
+        <tr>
+          <th>Rodzaj składki</th>
+          <th>Kwota (zł)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Emerytalna</td>
+          <td>{{ player.zus.emerytalna | number:'1.0-2' }}</td>
+        </tr>
+        <tr>
+          <td>Rentowa</td>
+          <td>{{ player.zus.rentowa | number:'1.0-2' }}</td>
+        </tr>
+        <tr>
+          <td>Chorobowa</td>
+          <td>{{ player.zus.chorobowa | number:'1.0-2' }}</td>
+        </tr>
+        <tr>
+          <td>Zdrowotna</td>
+          <td>{{ player.zus.zdrowotna | number:'1.0-2' }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Razem składki ZUS</th>
+          <th>{{ player.zus.razem | number:'1.0-2' }}</th>
+        </tr>
+      </tfoot>
+    </table>
+
+    <hr />
+
+    <!-- Wydatki -->
+    <h3>Wydatki stałe</h3>
+    <p><strong>Miesięczne wydatki:</strong> {{ player.wydatki_stale | number:'1.0-2' }} zł</p>
+
+    <hr />
+
+    <!-- Podsumowanie -->
+    <h3>Podsumowanie</h3>
+    <p><strong>Wolne środki / msc:</strong>
+      <span [ngClass]="{'negative': player.salaryNetto - player.wydatki_stale < 0}">
+        {{ player.salaryNetto - player.wydatki_stale | number:'1.0-2' }} zł
+      </span>
+    </p>
+
+    <div class="modal-actions">
+      <button (click)="closeModal()">Zamknij</button>
+    </div>
+  </div>
+</div>
+
