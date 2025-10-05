@@ -1,11 +1,14 @@
+<!-- <div class="d-flex flex-column" style="gap: 12px;padding: 100px;">
+  <app-user-card *ngFor="let scenario of scenarios" [scenario]="scenario"></app-user-card>
+</div>
+<div #background style="position: absolute; width: 100%; height: 200%; z-index: -100000;background-size: 256px;"></div> -->
+
 <div class="d-flex w-100 h-100 flex-column justify-content-between" >
   <div #stats class="hud stats">
     <div class="container-fluid">
       <div class="row">
-        <!-- <div > -->
-          <app-progress-bar class="col-12" color="#505ccc" [partCount]="24" [progress]="15"></app-progress-bar>
-          <app-progress-bar class="col-4" color="darkred" [partCount]="4" [progress]="3"></app-progress-bar>
-        <!-- </div> -->
+        <app-progress-bar class="col-12" color="#505ccc" [partCount]="24" [progress]="15"></app-progress-bar>
+        <app-progress-bar class="col-4" color="darkred" [partCount]="4" [progress]="3"></app-progress-bar>
       </div>
     </div>
   </div>
@@ -16,10 +19,15 @@
     (mousedown)="onMouseDown($event)"
     (mousemove)="onMouseMove($event)"
     (mouseup)="onMouseUp()">
-  <!-- <app-user-card *ngFor="let scenario of scenarios" [scenario]="scenario"></app-user-card> -->
 
   <div class="d-flex" style="overflow: auto;">
+    
     <div>
+      <app-character
+        style="position: absolute; z-index: 100;"
+        [style.left.px]="(posX * (width + margin)) + (posY % 2 * (width / 2)) + (width / 2) - (13)"
+        [style.top.px]="(posY * (height * 0.75 + margin)) + (height / 2) - (42)">
+      </app-character>
       <app-tile *ngFor="let tile of tiles"
         style="position: absolute;"
         [style.left.px]="(tile.x * (width + margin)) + (tile.y % 2 * (width / 2))"
@@ -31,20 +39,26 @@
         [display]="tile.display"
         [height]="height"
         [selected]="selectedStart?.x === tile.x && selectedStart?.y === tile.y"
-  [endSelected]="selectedEnd?.x === tile.x && selectedEnd?.y === tile.y"
-  [inPath]="isInPath(tile.x, tile.y)"
-  (tileClicked)="onTileClicked($event)">
+        [endSelected]="selectedEnd?.x === tile.x && selectedEnd?.y === tile.y"
+        [inPath]="isInPath(tile.x, tile.y)"
+        (tileClicked)="onTileClicked($event)">
       </app-tile>
     </div>
 
   </div>
 <div class="tabs">
+  <div #tab [title]="howToPlay">Jak grać?</div>
+
   <div *ngFor="let tab of tabs" #tab (click)="openModal()">{{tab}}</div>
 </div>
 <div #footer class="hud footer d-flex justify-content-between align-items-center">
   <div>Postać</div>
-  <div style="width: 40%;">
-    <app-progress-bar class="balance" color="yellow" [partCount]="6" [progress]="3"></app-progress-bar>
+  <div style="width: 50%;" class="d-flex">
+    <img width="32" src="./../assets/office.png">
+    <div>
+      <app-progress-bar class="balance w-100" color="yellow" [partCount]="6" [progress]="3"></app-progress-bar>
+    </div>
+    <img width="32" src="./../assets/family.png">
   </div>
   <div #endTurn class="endTurn">Zakończ turę</div>
 </div>

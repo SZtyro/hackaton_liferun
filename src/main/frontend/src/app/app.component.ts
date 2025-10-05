@@ -9,6 +9,7 @@ import {
   Scenario,
   UserCardComponent,
 } from './component/user-card/user-card.component';
+import { CharacterComponent } from './component/character/character.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import {
     TileComponent,
     ProgressBarComponent,
     UserCardComponent,
+    CharacterComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -27,6 +29,7 @@ import {
 })
 export class AppComponent {
 
+  @ViewChild("background") bg;
   @ViewChild("footer") box;
   @ViewChild("stats") stats;
   @ViewChild("finance") finance;
@@ -39,17 +42,26 @@ export class AppComponent {
   height = 64;
   size = 20;
 
+  posX = 4
+  posY = 4
+
   tiles: any = [];
 
-  selectedStart: { x: number, y: number } | null = null;
+  selectedStart: { x: number, y: number } | null = {x: this.posX, y: this.posY};
   selectedEnd: { x: number, y: number } | null = null;
   lastDistance: number | null = null;
 
   pathTiles: { x: number, y: number }[] = [];
 
 
+  howToPlay = `
+    Mapę można przesuwać za pomocą myszki.
+    Wybierz miejsce przemieszczenia postaci.
+    Gra wyświetla trasę. 
+    Po ponownym kliknięciu postać przemieszcza się.
+  `
 
-  tabs = ['Statystyki', 'Finanse', 'Rozwój']
+  tabs = ['Statystyki', 'Praca', 'Finanse', 'Rozwój']
   scenarios: Scenario[] = [
     {
       title: 'Sandbox',
@@ -125,6 +137,8 @@ export class AppComponent {
 
   ngAfterViewInit(): void {
     let color = '#535353';
+    // applyPixelArtBackground(this.bg.nativeElement, "#408ce3", 16, 0.03);
+    // applyPixelArtBackground(this.bg.nativeElement, "#332f1d", 16, 0.03);
     applyPixelArtBackground(this.box.nativeElement, color);
     applyPixelArtBackground(this.finance.nativeElement, color);
     applyPixelArtBackground(this.stats.nativeElement, color);
@@ -180,9 +194,12 @@ export class AppComponent {
       this.calculatePath();
     } else {
       // reset wyboru
+      this.posX = tile.x;
+      this.posY = tile.y;
       this.selectedStart = tile;
       this.selectedEnd = null;
       this.lastDistance = null;
+      this.pathTiles = [];
 
     }
   }
